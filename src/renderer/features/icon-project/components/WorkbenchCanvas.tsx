@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 import { Minus, Plus } from 'lucide-react';
 
@@ -36,6 +37,12 @@ export function WorkbenchCanvas({
     selectedIcnsChunk,
     pixelEditor,
   );
+
+  const effectivePixelGrid =
+    showPixelGrid && pixelEditor.resource
+      ? pixelEditor.zoom >= 3 ||
+        Math.max(pixelEditor.resource.width, pixelEditor.resource.height) < 512
+      : false;
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isPanning, setIsPanning] = useState(false);
@@ -82,13 +89,15 @@ export function WorkbenchCanvas({
       const newContentX = contentX * scale;
       const newContentY = contentY * scale;
 
-      pixelEditor.setZoom(newZoom);
-
-      // Adjust scroll so the same content point stays under the pointer
-      requestAnimationFrame(() => {
-        container.scrollLeft = newContentX - pointerX;
-        container.scrollTop = newContentY - pointerY;
+      // Force React to commit DOM changes synchronously so the container
+      // dimensions, canvas transform, and background grid are all updated
+      // before we adjust scroll — everything paints in a single frame.
+      flushSync(() => {
+        pixelEditor.setZoom(newZoom);
       });
+
+      container.scrollLeft = newContentX - pointerX;
+      container.scrollTop = newContentY - pointerY;
     };
 
     container.addEventListener('wheel', handleWheel, { passive: false });
@@ -183,7 +192,7 @@ export function WorkbenchCanvas({
           ref={scrollContainerRef}
           className={cn(
             'absolute inset-0 overflow-auto',
-            showPixelGrid ? 'pixel-stage' : null,
+            effectivePixelGrid ? 'pixel-stage' : null,
             isPanning ? 'cursor-grab' : null,
           )}
           onPointerDown={handlePanPointerDown}
@@ -191,7 +200,7 @@ export function WorkbenchCanvas({
           onPointerUp={handlePanPointerUp}
           style={{
             contain: 'layout style',
-            ...(showPixelGrid && pixelEditor.resource
+            ...(effectivePixelGrid
               ? {
                   backgroundSize: `${pixelEditor.zoom}px ${pixelEditor.zoom}px, ${pixelEditor.zoom}px ${pixelEditor.zoom}px`,
                 }
@@ -226,6 +235,7 @@ export function WorkbenchCanvas({
                     transform: `scale(${pixelEditor.zoom})`,
                     transformOrigin: 'top left',
                     willChange: 'transform',
+                    backfaceVisibility: 'hidden',
                   }}
                   width={pixelEditor.resource.width}
                 />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type DragEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type DragEvent } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HelpModal } from '@/features/icon-project/components/HelpModal';
@@ -68,8 +68,8 @@ export function EditorPage() {
   const canUndo = pixelEditor.canUndo || (project?.canUndo ?? false);
   const canRedo = pixelEditor.canRedo || (project?.canRedo ?? false);
 
-  useEffect(() => {
-    const handleWorkbenchCommand = (command: WorkbenchCommand): void => {
+  const editorCommandHandler = useCallback(
+    (command: WorkbenchCommand): void => {
       if (command === 'saveProject') {
         if (project?.format === 'icns') {
           void exportIcns();
@@ -123,25 +123,35 @@ export function EditorPage() {
           void removeSelectedIcnsChunk();
         }
       }
+    },
+    [
+      exportIco,
+      exportIcns,
+      pixelEditor,
+      project,
+      redoProject,
+      removeSelectedIcnsChunk,
+      removeSelectedEntry,
+      selectedIcnsChunk,
+      selectedIcoEntry,
+      undoProject,
+    ],
+  );
+
+  const editorCommandHandlerRef = useRef(editorCommandHandler);
+  editorCommandHandlerRef.current = editorCommandHandler;
+
+  useEffect(() => {
+    const stableHandler = (command: WorkbenchCommand): void => {
+      editorCommandHandlerRef.current(command);
     };
 
-    window.appApi.addWorkbenchCommandListener(handleWorkbenchCommand);
+    window.appApi.addWorkbenchCommandListener(stableHandler);
 
     return () => {
-      window.appApi.removeWorkbenchCommandListener(handleWorkbenchCommand);
+      window.appApi.removeWorkbenchCommandListener(stableHandler);
     };
-  }, [
-    exportIco,
-    exportIcns,
-    pixelEditor,
-    project,
-    redoProject,
-    removeSelectedIcnsChunk,
-    removeSelectedEntry,
-    selectedIcnsChunk,
-    selectedIcoEntry,
-    undoProject,
-  ]);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;

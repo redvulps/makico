@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   type CreateProjectFormat,
@@ -128,8 +128,8 @@ export function useWorkbenchBootstrap(): WorkbenchBootstrapState {
     };
   }, []);
 
-  useEffect(() => {
-    const handleWorkbenchCommand = (command: WorkbenchCommand): void => {
+  const bootstrapCommandHandler = useCallback(
+    (command: WorkbenchCommand): void => {
       if (command === 'importIco') {
         void importIco();
         return;
@@ -138,14 +138,24 @@ export function useWorkbenchBootstrap(): WorkbenchBootstrapState {
       if (command === 'importIcns') {
         void importIcns();
       }
+    },
+    [importIco, importIcns],
+  );
+
+  const bootstrapCommandHandlerRef = useRef(bootstrapCommandHandler);
+  bootstrapCommandHandlerRef.current = bootstrapCommandHandler;
+
+  useEffect(() => {
+    const stableHandler = (command: WorkbenchCommand): void => {
+      bootstrapCommandHandlerRef.current(command);
     };
 
-    window.appApi.addWorkbenchCommandListener(handleWorkbenchCommand);
+    window.appApi.addWorkbenchCommandListener(stableHandler);
 
     return () => {
-      window.appApi.removeWorkbenchCommandListener(handleWorkbenchCommand);
+      window.appApi.removeWorkbenchCommandListener(stableHandler);
     };
-  }, [importIco, importIcns]);
+  }, []);
 
   const selectedIcoEntry = useMemo(() => {
     if (dataState.project?.format !== 'ico') {
