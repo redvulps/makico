@@ -11,6 +11,11 @@ export interface PngMetadata {
   readonly colorType: number;
 }
 
+/**
+ * Extracts width, height, bit depth, and color type from a PNG file's IHDR chunk.
+ *
+ * Only reads the first 33 bytes — does not decode pixel data or validate the full file.
+ */
 export function parsePngMetadata(bytes: Buffer): PngMetadata {
   if (bytes.length < 33) {
     throw new InvalidPngFileError(

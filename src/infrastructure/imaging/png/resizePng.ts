@@ -1,5 +1,13 @@
 import { nativeImage } from 'electron';
 
+import { InvalidPngFileError } from './InvalidPngFileError';
+
+/**
+ * Resizes a PNG image to the specified dimensions using Electron's native image API.
+ *
+ * Uses the highest quality resampling available. Throws if the input buffer
+ * cannot be decoded as a valid image.
+ */
 export function resizePng(
   pngBytes: Buffer,
   targetWidth: number,
@@ -8,7 +16,9 @@ export function resizePng(
   const image = nativeImage.createFromBuffer(pngBytes);
 
   if (image.isEmpty()) {
-    throw new Error('Failed to decode the source PNG image for resizing.');
+    throw new InvalidPngFileError(
+      'Failed to decode the source PNG image for resizing.',
+    );
   }
 
   const resized = image.resize({

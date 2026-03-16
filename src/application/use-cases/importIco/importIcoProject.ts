@@ -10,7 +10,9 @@ export interface IcoProjectSession {
   readonly name: string;
   readonly sourcePath: string | null;
   readonly importedAt: string;
+  /** The entries as they were at the last save (or import). Used as the reset/diff baseline. */
   readonly savedEntries: readonly ParsedIcoEntry[];
+  /** The entries reflecting all unsaved edits. This is what the UI renders. */
   readonly workingEntries: readonly ParsedIcoEntry[];
   readonly undoStack: readonly (readonly ParsedIcoEntry[])[];
   readonly redoStack: readonly (readonly ParsedIcoEntry[])[];
@@ -24,6 +26,7 @@ interface ImportIcoProjectInput {
   readonly bytes: Buffer;
 }
 
+/** Parses an ICO file buffer and creates a new project session with undo/redo stacks. */
 export function importIcoProject(
   input: ImportIcoProjectInput,
 ): IcoProjectSession {

@@ -24,6 +24,13 @@ interface AppSettingsStoreOptions {
   readonly getLegacyWorkbenchSettingsFilePath?: () => string;
 }
 
+/**
+ * Manages persisted application settings (window geometry, workbench prefs, recent projects).
+ *
+ * Settings are stored as a single JSON file on disk. Reads are cached in memory after the
+ * first load; writes are serialized through a queue to prevent concurrent file corruption.
+ * On first launch (or corrupted file), falls back to defaults and rewrites the file.
+ */
 export class AppSettingsStore {
   private readonly getSettingsFilePath: () => string;
   private readonly getLegacyWorkbenchSettingsFilePath?: () => string;
@@ -268,6 +275,14 @@ export class AppSettingsStore {
   }
 }
 
+/**
+ * Field-by-field equality check between a raw parsed candidate and a normalized settings object.
+ *
+ * This intentional verbose comparison exists because the candidate (`AppSettingsInput`) may be
+ * a partial object from `JSON.parse` while the normalized form (`AppSettingsDto`) is complete
+ * with defaults filled in. Using `JSON.stringify` would give false negatives when the parsed
+ * JSON has extra keys, different key ordering, or missing fields that were filled with defaults.
+ */
 function areAppSettingsEqual(
   candidate: AppSettingsInput | null | undefined,
   normalized: AppSettingsDto,

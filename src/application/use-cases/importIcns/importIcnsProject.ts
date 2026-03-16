@@ -12,7 +12,9 @@ export interface IcnsProjectSession {
   readonly sourcePath: string | null;
   readonly importedAt: string;
   readonly containerDiagnostics: readonly string[];
+  /** The chunks as they were at the last save (or import). Used as the reset/diff baseline. */
   readonly savedChunks: readonly ParsedIcnsChunk[];
+  /** The chunks reflecting all unsaved edits. This is what the UI renders. */
   readonly workingChunks: readonly ParsedIcnsChunk[];
   readonly undoStack: readonly (readonly ParsedIcnsChunk[])[];
   readonly redoStack: readonly (readonly ParsedIcnsChunk[])[];
@@ -26,6 +28,7 @@ interface ImportIcnsProjectInput {
   readonly bytes: Buffer;
 }
 
+/** Parses an ICNS file buffer and creates a new project session with undo/redo stacks. */
 export function importIcnsProject(
   input: ImportIcnsProjectInput,
 ): IcnsProjectSession {

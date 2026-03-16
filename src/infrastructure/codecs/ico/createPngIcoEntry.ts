@@ -3,6 +3,12 @@ import { parsePngMetadata } from '@infrastructure/imaging/png/parsePngMetadata';
 import { InvalidIcoFileError } from './InvalidIcoFileError';
 import type { ParsedIcoEntry } from './icoTypes';
 
+/**
+ * Creates a new ICO entry from raw PNG bytes.
+ *
+ * Reads dimensions and color type from the PNG's IHDR chunk to populate the
+ * ICO directory fields. Rejects images outside the 1–256 pixel range.
+ */
 export function createPngIcoEntry(
   entryId: string,
   pngBytes: Buffer,

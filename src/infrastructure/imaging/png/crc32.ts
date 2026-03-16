@@ -1,5 +1,11 @@
 const CRC_TABLE = createCrcTable();
 
+/**
+ * Computes a CRC-32 checksum as defined by the PNG specification (ISO 3309).
+ *
+ * Uses the standard polynomial 0xEDB88320 (reversed representation of 0x04C11DB7)
+ * with a pre-computed 256-entry lookup table.
+ */
 export function crc32(buffer: Uint8Array): number {
   let crc = 0xffffffff;
 

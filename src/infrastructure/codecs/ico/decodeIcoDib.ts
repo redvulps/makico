@@ -13,6 +13,13 @@ interface DecodedIcoDib {
   readonly previewDataUrl: string | null;
 }
 
+/**
+ * Decodes a Device-Independent Bitmap (DIB) payload embedded in an ICO entry.
+ *
+ * Reads the BITMAPINFOHEADER, extracts dimensions and color depth, and when
+ * the compression is BI_RGB with a supported bit depth (1/4/8/24/32), decodes
+ * the pixel data into RGBA and generates a PNG data URL for preview.
+ */
 export function decodeIcoDib(
   payload: Buffer,
   expectedWidth: number,
@@ -104,6 +111,7 @@ export function decodeIcoDib(
   };
 }
 
+/** DIB headers store double-height (XOR + AND mask) — normalizes to the actual image height. */
 function normalizeHeight(storedHeight: number, expectedHeight: number): number {
   const absoluteHeight = Math.abs(storedHeight);
 
@@ -131,6 +139,7 @@ function getColorTableSize(view: DataView, bitCount: number): number {
   return paletteEntries * 4;
 }
 
+/** Computes the DWORD-aligned row stride for a DIB scanline. */
 function getRowStride(width: number, bitCount: number): number {
   return Math.floor((width * bitCount + 31) / 32) * 4;
 }
@@ -177,6 +186,7 @@ function supportsPreviewBitDepth(bitCount: number): boolean {
   );
 }
 
+/** Decodes 32-bit BGRA rows into top-down RGBA. Fills alpha to 0xFF if all-zero. */
 function decode32Bit(input: DecodeRgbaPixelsInput): Uint8Array {
   const rgba = new Uint8Array(input.width * input.height * 4);
   let hasMeaningfulAlpha = false;
@@ -299,6 +309,7 @@ function readPaletteIndex(
   return (byte >> shift) & 0x01;
 }
 
+/** Applies the 1-bit AND mask to zero out alpha on transparent pixels. */
 function applyAndMask(
   payload: Buffer,
   rgba: Uint8Array,

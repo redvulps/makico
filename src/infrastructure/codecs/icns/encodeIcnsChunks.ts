@@ -6,6 +6,12 @@ export interface EncodableIcnsChunk {
 const ICNS_HEADER_SIZE = 8;
 const ICNS_CHUNK_HEADER_SIZE = 8;
 
+/**
+ * Serializes ICNS chunks into a valid ICNS container buffer.
+ *
+ * Writes the "icns" magic header with the total file length, then appends
+ * each chunk with its 8-byte header (type + length) followed by the payload.
+ */
 export function encodeIcnsChunks(
   chunks: readonly EncodableIcnsChunk[],
 ): Buffer {

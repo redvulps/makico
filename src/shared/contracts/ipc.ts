@@ -23,6 +23,7 @@ export type WorkbenchCommand =
   | 'deleteSelected';
 export type CreateProjectFormat = 'ico' | 'icns';
 
+/** Channel names for request/response IPC between renderer and main process. */
 export const IPC_CHANNELS = {
   getAppInfo: 'app:get-info',
   getWorkbenchSnapshot: 'workbench:get-snapshot',
@@ -59,11 +60,13 @@ export const IPC_CHANNELS = {
   windowClose: 'window:close',
 } as const;
 
+/** Channel names for one-way event broadcasts from main to renderer. */
 export const IPC_EVENTS = {
   runWorkbenchCommand: 'workbench:runCommand',
   windowStateChanged: 'window:stateChanged',
 } as const;
 
+/** Type-safe contract for all IPC methods exposed to the renderer via contextBridge. */
 export interface AppApi {
   getAppInfo(): Promise<AppInfoDto>;
   getWorkbenchSnapshot(): Promise<WorkbenchSnapshotDto>;

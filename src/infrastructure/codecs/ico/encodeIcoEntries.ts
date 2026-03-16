@@ -4,6 +4,12 @@ import type { ParsedIcoEntry } from './icoTypes';
 const ICO_HEADER_SIZE = 6;
 const ICO_DIRECTORY_ENTRY_SIZE = 16;
 
+/**
+ * Serializes parsed ICO entries back into a valid ICO file buffer.
+ *
+ * Writes the ICONDIR header, builds the directory table with recalculated
+ * offsets, and appends each entry's payload contiguously.
+ */
 export function encodeIcoEntries(entries: readonly ParsedIcoEntry[]): Buffer {
   if (entries.length === 0) {
     throw new InvalidIcoFileError(

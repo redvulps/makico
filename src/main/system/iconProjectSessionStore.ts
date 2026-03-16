@@ -2,6 +2,13 @@ import type { ActiveWindowProject } from './windowProjectRegistry';
 import type { IcnsProjectSession } from '@application/use-cases/importIcns/importIcnsProject';
 import type { IcoProjectSession } from '@application/use-cases/importIco/importIcoProject';
 
+/**
+ * In-memory store for active icon project sessions.
+ *
+ * ICO and ICNS sessions are stored in separate maps intentionally — they have
+ * different shapes (`ParsedIcoEntry[]` vs `ParsedIcnsChunk[]`) and keeping them
+ * segregated avoids type narrowing at every access site.
+ */
 class IconProjectSessionStore {
   private readonly icoSessions = new Map<string, IcoProjectSession>();
   private readonly icnsSessions = new Map<string, IcnsProjectSession>();

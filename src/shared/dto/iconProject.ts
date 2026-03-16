@@ -1,11 +1,16 @@
+/** Renderer-safe projection of a single ICO directory entry (no raw payload buffer). */
 export interface IcoEntryDto {
   readonly id: string;
   readonly index: number;
   readonly width: number;
   readonly height: number;
+  /** Number of palette colors (0 = no palette or ≥256 colors). */
   readonly colorCount: number;
+  /** Color planes (typically 1). */
   readonly planes: number;
+  /** Bits per pixel — determines color depth. */
   readonly bitCount: number;
+  /** Payload size in bytes as declared in the ICO directory. */
   readonly bytesInRes: number;
   readonly payloadKind: 'png' | 'dib';
   readonly previewDataUrl: string | null;
@@ -43,6 +48,7 @@ export type IcnsPayloadFamilyDto =
   | 'tableOfContents'
   | 'unknown';
 
+/** Renderer-safe projection of a single ICNS chunk (no raw payload buffer). */
 export interface IcnsChunkDto {
   readonly id: string;
   readonly index: number;

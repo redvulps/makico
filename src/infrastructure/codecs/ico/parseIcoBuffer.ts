@@ -8,6 +8,13 @@ const PNG_SIGNATURE = Buffer.from([
   0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
 ]);
 
+/**
+ * Parses a raw ICO file buffer into structured entry metadata.
+ *
+ * Validates the ICONDIR header, reads each directory entry, detects whether
+ * the payload is PNG or DIB, decodes DIB entries into RGBA for preview,
+ * and verifies that no entry payloads overlap.
+ */
 export function parseIcoBuffer(buffer: Buffer): ParsedIcoFile {
   if (buffer.byteLength < ICO_HEADER_SIZE) {
     throw new InvalidIcoFileError(
@@ -105,6 +112,7 @@ export function parseIcoBuffer(buffer: Buffer): ParsedIcoFile {
   return { entries };
 }
 
+/** ICO encodes 256 as 0 in the directory byte — this reverses that mapping. */
 function normalizeDimension(value: number): number {
   return value === 0 ? 256 : value;
 }
@@ -132,6 +140,7 @@ function createPreviewDataUrl(
   return dibMetadata?.previewDataUrl ?? null;
 }
 
+/** Ensures no two entries share the same byte range in the original ICO file. */
 function assertNonOverlappingRanges(entries: readonly ParsedIcoEntry[]): void {
   const sortedRanges = [...entries].sort(
     (left, right) => left.imageOffset - right.imageOffset,

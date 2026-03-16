@@ -1,5 +1,13 @@
 import type { ParsedIcnsSlot } from './icnsTypes';
 
+/**
+ * The complete set of PNG-era ICNS slot definitions recognized by macOS.
+ *
+ * Each entry maps a four-character OSType to its logical point size, Retina scale,
+ * and pixel dimensions. Slots marked `isCanonical` form the standard 10-size icon set
+ * expected by macOS (16pt through 512pt at 1x and 2x). The non-canonical 64x64@1x
+ * slot (icp6) exists in the spec but is rarely used in practice.
+ */
 const slotDefinitions: readonly ParsedIcnsSlot[] = [
   {
     label: '16x16@1x',

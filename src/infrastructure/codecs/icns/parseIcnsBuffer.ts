@@ -31,6 +31,13 @@ const KNOWN_CHUNK_TYPES = new Set([
   ...AUXILIARY_CHUNK_TYPES,
 ]);
 
+/**
+ * Parses a raw ICNS file buffer into structured chunk metadata.
+ *
+ * Validates the "icns" magic header, iterates through each chunk, classifies
+ * the payload family (PNG, JPEG 2000, legacy RGB, mask, etc.), maps known
+ * chunk types to their slot definitions, and generates PNG previews where possible.
+ */
 export function parseIcnsBuffer(buffer: Buffer): ParsedIcnsFile {
   if (buffer.byteLength < ICNS_HEADER_SIZE) {
     throw new InvalidIcnsFileError(
