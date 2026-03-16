@@ -70,7 +70,12 @@ export function EditorPage() {
 
   const editorCommandHandler = useCallback(
     (command: WorkbenchCommand): void => {
-      if (command === 'saveProject') {
+      if (command === 'newProject') {
+        setActiveModal('newProject');
+        return;
+      }
+
+      if (command === 'saveProject' || command === 'saveCopy') {
         if (project?.format === 'icns') {
           void exportIcns();
           return;
@@ -152,6 +157,36 @@ export function EditorPage() {
       window.appApi.removeWorkbenchCommandListener(stableHandler);
     };
   }, []);
+
+  // Tool and global keyboard shortcuts
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'F1') {
+        event.preventDefault();
+        setActiveModal('help');
+        return;
+      }
+
+      if (event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+
+      if (event.key === 'b' || event.key === 'B') {
+        pixelEditor.setActiveTool('pen');
+        return;
+      }
+
+      if (event.key === 'e' || event.key === 'E') {
+        pixelEditor.setActiveTool('eraser');
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [pixelEditor.setActiveTool]);
 
   useEffect(() => {
     let isMounted = true;
@@ -315,7 +350,6 @@ export function EditorPage() {
       ) : null}
       {activeModal === 'settings' ? (
         <SettingsModal
-          appInfo={appInfo}
           onClose={() => {
             setActiveModal(null);
           }}
@@ -359,6 +393,16 @@ export function EditorPage() {
           }}
           onOpenSettingsModal={() => {
             setActiveModal('settings');
+          }}
+          onSaveCopy={async () => {
+            if (project?.format === 'icns') {
+              await exportIcns();
+              return;
+            }
+
+            if (project?.format === 'ico') {
+              await exportIco();
+            }
           }}
           onSaveProject={async () => {
             if (project?.format === 'icns') {

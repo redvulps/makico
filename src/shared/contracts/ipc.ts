@@ -18,6 +18,8 @@ export type WorkbenchCommand =
   | 'importIco'
   | 'importIcns'
   | 'saveProject'
+  | 'saveCopy'
+  | 'newProject'
   | 'undo'
   | 'redo'
   | 'deleteSelected';

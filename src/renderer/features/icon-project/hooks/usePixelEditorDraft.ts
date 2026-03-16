@@ -399,10 +399,14 @@ export function usePixelEditorDraft({
       }
 
       event.currentTarget.setPointerCapture(event.pointerId);
-      isDrawingRef.current = activeTool !== 'eyedropper';
       lastPointRef.current = point;
 
-      if (activeTool === 'eyedropper') {
+      // Alt+click picks a color regardless of the active tool
+      const useEyedropper = activeTool === 'eyedropper' || event.altKey;
+
+      isDrawingRef.current = !useEyedropper;
+
+      if (useEyedropper) {
         const sampledColor = getSampledPixelColor(
           resource.id,
           point.x,

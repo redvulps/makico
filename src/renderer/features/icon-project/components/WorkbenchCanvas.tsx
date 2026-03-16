@@ -45,6 +45,7 @@ export function WorkbenchCanvas({
       : false;
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isAltHeld, setIsAltHeld] = useState(false);
   const [isPanning, setIsPanning] = useState(false);
   const panOriginRef = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
@@ -106,6 +107,35 @@ export function WorkbenchCanvas({
       container.removeEventListener('wheel', handleWheel);
     };
   }, [pixelEditor.canEdit, pixelEditor.setZoom]);
+
+  // Track Alt key for eyedropper cursor
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Alt') {
+        setIsAltHeld(true);
+      }
+    }
+
+    function handleKeyUp(event: KeyboardEvent): void {
+      if (event.key === 'Alt') {
+        setIsAltHeld(false);
+      }
+    }
+
+    function handleBlur(): void {
+      setIsAltHeld(false);
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('blur', handleBlur);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('blur', handleBlur);
+    };
+  }, []);
 
   // Middle-click → pan (scroll mode)
   const handlePanPointerDown = useCallback(
@@ -221,7 +251,7 @@ export function WorkbenchCanvas({
                   className={cn(
                     'touch-none bg-transparent [image-rendering:pixelated]',
                     effectivePixelGrid ? null : 'border border-border',
-                    getCanvasCursor(pixelEditor.activeTool),
+                    getCanvasCursor(isAltHeld ? 'eyedropper' : pixelEditor.activeTool),
                   )}
                   height={pixelEditor.resource.height}
                   onPointerDown={pixelEditor.handlePointerDown}

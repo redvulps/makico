@@ -11,10 +11,25 @@ export function registerApplicationMenu(): void {
       label: 'File',
       submenu: [
         {
+          label: 'New Project',
+          accelerator: 'CommandOrControl+N',
+          click: () => {
+            dispatchWorkbenchCommand('newProject');
+          },
+        },
+        { type: 'separator' },
+        {
           label: 'Save',
           accelerator: 'CommandOrControl+S',
           click: () => {
             dispatchWorkbenchCommand('saveProject');
+          },
+        },
+        {
+          label: 'Save a Copy...',
+          accelerator: 'CommandOrControl+Shift+S',
+          click: () => {
+            dispatchWorkbenchCommand('saveCopy');
           },
         },
         { type: 'separator' },

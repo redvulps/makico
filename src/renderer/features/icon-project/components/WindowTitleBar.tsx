@@ -29,6 +29,7 @@ interface WindowTitleBarProps {
   readonly onOpenIcns: () => Promise<void>;
   readonly onOpenRecentProject: (filePath: string) => Promise<void>;
   readonly onSaveProject: () => Promise<void>;
+  readonly onSaveCopy: () => Promise<void>;
   readonly onOpenSettingsModal: () => void;
   readonly onOpenHelpModal: () => void;
   readonly onMinimizeWindow: () => Promise<void>;
@@ -48,6 +49,7 @@ export function WindowTitleBar({
   onOpenIcns,
   onOpenRecentProject,
   onSaveProject,
+  onSaveCopy,
   onOpenSettingsModal,
   onOpenHelpModal,
   onMinimizeWindow,
@@ -55,7 +57,9 @@ export function WindowTitleBar({
   onCloseWindow,
 }: WindowTitleBarProps) {
   const [isOpenMenuVisible, setIsOpenMenuVisible] = useState(false);
+  const [isSaveMenuVisible, setIsSaveMenuVisible] = useState(false);
   const openMenuRef = useRef<HTMLDivElement | null>(null);
+  const saveMenuRef = useRef<HTMLDivElement | null>(null);
   const isBusy = importingFormat !== null || isExporting || isUpdatingProject;
   const canSave =
     (project?.format === 'ico' && project.entryCount > 0) ||
@@ -80,6 +84,26 @@ export function WindowTitleBar({
       window.removeEventListener('mousedown', handlePointerDown);
     };
   }, [isOpenMenuVisible]);
+
+  useEffect(() => {
+    if (!isSaveMenuVisible) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent): void {
+      if (saveMenuRef.current?.contains(event.target as Node)) {
+        return;
+      }
+
+      setIsSaveMenuVisible(false);
+    }
+
+    window.addEventListener('mousedown', handlePointerDown);
+
+    return () => {
+      window.removeEventListener('mousedown', handlePointerDown);
+    };
+  }, [isSaveMenuVisible]);
 
   return (
     <header className="app-drag flex items-center justify-between border-b border-border/80 bg-background/90 px-3 py-1.5 text-foreground">
@@ -141,13 +165,47 @@ export function WindowTitleBar({
             </div>
           ) : null}
         </div>
-        <TitleBarActionButton
-          disabled={!canSave || isBusy}
-          onClick={() => void onSaveProject()}
-        >
-          <Save className="size-4" />
-          {isExporting ? 'Saving...' : 'Save'}
-        </TitleBarActionButton>
+        <div className="relative" ref={saveMenuRef}>
+          <div className="flex items-center">
+            <TitleBarActionButton
+              className="rounded-r-none border-r-0"
+              disabled={!canSave || isBusy}
+              onClick={() => void onSaveProject()}
+            >
+              <Save className="size-4" />
+              {isExporting ? 'Saving...' : 'Save'}
+            </TitleBarActionButton>
+            <button
+              className={cn(
+                'inline-flex h-8 items-center rounded-full rounded-l-none border-l border-primary-foreground/20 bg-primary px-1.5 text-primary-foreground transition-colors',
+                !canSave || isBusy
+                  ? 'cursor-not-allowed opacity-55'
+                  : 'hover:bg-primary/90',
+              )}
+              disabled={!canSave || isBusy}
+              onClick={() => {
+                setIsSaveMenuVisible((v) => !v);
+              }}
+              type="button"
+            >
+              <ChevronDown className="size-3.5" />
+            </button>
+          </div>
+          {isSaveMenuVisible ? (
+            <div className="absolute top-[calc(100%+8px)] left-0 z-40 w-48 rounded-xl border border-border/80 bg-card p-1 shadow-lg">
+              <button
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
+                onClick={() => {
+                  setIsSaveMenuVisible(false);
+                  void onSaveCopy();
+                }}
+                type="button"
+              >
+                Save a copy...
+              </button>
+            </div>
+          ) : null}
+        </div>
         <TitleBarIconButton
           isActive={false}
           onClick={onOpenSettingsModal}
@@ -201,12 +259,14 @@ export function WindowTitleBar({
 
 interface TitleBarActionButtonProps {
   readonly children: ReactNode;
+  readonly className?: string;
   readonly disabled?: boolean;
   readonly onClick: () => void;
 }
 
 function TitleBarActionButton({
   children,
+  className,
   disabled = false,
   onClick,
 }: TitleBarActionButtonProps) {
@@ -215,6 +275,7 @@ function TitleBarActionButton({
       className={cn(
         'inline-flex h-8 items-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors',
         disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-primary/90',
+        className,
       )}
       disabled={disabled}
       onClick={onClick}
