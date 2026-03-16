@@ -288,6 +288,7 @@ function areAppSettingsEqual(
   normalized: AppSettingsDto,
 ): boolean {
   return (
+    candidate?.workbench?.theme === normalized.workbench.theme &&
     candidate?.workbench?.showPixelGrid ===
       normalized.workbench.showPixelGrid &&
     candidate?.workbench?.showCanvasMetrics ===

@@ -1,3 +1,6 @@
+import { Moon, Monitor, Sun } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 import type { AppInfoDto } from '@shared/dto/appInfo';
 import type { WorkbenchSettingsDto } from '@shared/dto/workbenchSettings';
 
@@ -22,9 +25,41 @@ export function SettingsModal({
   return (
     <WorkbenchModalShell onClose={onClose} title="Settings">
       <div className="grid gap-6 p-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(240px,0.9fr)]">
-        <section className="space-y-4">
+        <section className="space-y-6">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6a6865]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              Appearance
+            </p>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <ThemeOption
+                icon={Sun}
+                isSelected={preferences.theme === 'light'}
+                label="Light"
+                onClick={() => {
+                  void onPreferenceChange('theme', 'light');
+                }}
+              />
+              <ThemeOption
+                icon={Moon}
+                isSelected={preferences.theme === 'dark'}
+                label="Dark"
+                onClick={() => {
+                  void onPreferenceChange('theme', 'dark');
+                }}
+              />
+              <ThemeOption
+                icon={Monitor}
+                isSelected={preferences.theme === 'system'}
+                label="System"
+                onClick={() => {
+                  void onPreferenceChange('theme', 'system');
+                }}
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Canvas
             </p>
             <div className="mt-3 space-y-3">
@@ -48,25 +83,25 @@ export function SettingsModal({
           </div>
         </section>
 
-        <aside className="border border-black/18 bg-[#e2e0dd] p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6a6865]">
+        <aside className="rounded-xl border border-border bg-muted p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Runtime
           </p>
-          <dl className="mt-4 space-y-3 text-sm text-[#444341]">
+          <dl className="mt-4 space-y-3 text-sm text-foreground/70">
             <div>
-              <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6a6865]">
+              <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 App
               </dt>
               <dd className="mt-1">{appInfo.name}</dd>
             </div>
             <div>
-              <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6a6865]">
+              <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Platform
               </dt>
               <dd className="mt-1">{appInfo.platform}</dd>
             </div>
             <div>
-              <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6a6865]">
+              <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Electron
               </dt>
               <dd className="mt-1">{appInfo.versions.electron}</dd>
@@ -75,6 +110,34 @@ export function SettingsModal({
         </aside>
       </div>
     </WorkbenchModalShell>
+  );
+}
+
+function ThemeOption({
+  icon: Icon,
+  isSelected,
+  label,
+  onClick,
+}: {
+  readonly icon: typeof Sun;
+  readonly isSelected: boolean;
+  readonly label: string;
+  readonly onClick: () => void;
+}) {
+  return (
+    <button
+      className={cn(
+        'flex flex-col items-center gap-2 rounded-xl border p-3 text-sm font-medium transition-colors',
+        isSelected
+          ? 'border-primary bg-primary/10 text-foreground'
+          : 'border-border bg-background text-muted-foreground hover:bg-accent',
+      )}
+      onClick={onClick}
+      type="button"
+    >
+      <Icon className="size-5" />
+      {label}
+    </button>
   );
 }
 
@@ -90,20 +153,20 @@ function SettingToggle({
   readonly onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-start gap-4 border border-black/18 bg-[#e2e0dd] p-4">
+    <label className="flex cursor-pointer items-start gap-4 rounded-xl border border-border bg-muted p-4">
       <input
         checked={checked}
-        className="mt-1 size-4 accent-[#4b4b4a]"
+        className="mt-1 size-4 accent-primary"
         onChange={(event) => {
           onChange(event.target.checked);
         }}
         type="checkbox"
       />
       <span className="min-w-0">
-        <span className="block text-sm font-semibold text-[#2e2d2b]">
+        <span className="block text-sm font-semibold text-foreground">
           {label}
         </span>
-        <span className="mt-1.5 block text-sm leading-6 text-[#5d5b58]">
+        <span className="mt-1.5 block text-sm leading-6 text-muted-foreground">
           {description}
         </span>
       </span>

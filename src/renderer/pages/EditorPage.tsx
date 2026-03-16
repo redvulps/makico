@@ -178,8 +178,8 @@ export function EditorPage() {
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#bdb8b2] p-6">
-        <Card className="w-full max-w-xl rounded-sm border-black/20 bg-[#d9d7d4] shadow-[0_24px_60px_-32px_rgba(0,0,0,0.45)]">
+      <main className="flex min-h-screen items-center justify-center bg-background p-6">
+        <Card className="w-full max-w-xl">
           <CardHeader>
             <CardTitle>Booting Makico workbench</CardTitle>
           </CardHeader>
@@ -193,12 +193,12 @@ export function EditorPage() {
 
   if ((!appInfo || !snapshot) && error) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#bdb8b2] p-6">
-        <Card className="w-full max-w-xl rounded-sm border-[#8d4a45] bg-[#e1d3d0] shadow-[0_24px_60px_-32px_rgba(0,0,0,0.45)]">
+      <main className="flex min-h-screen items-center justify-center bg-background p-6">
+        <Card className="w-full max-w-xl border-destructive/40">
           <CardHeader>
             <CardTitle>Workbench bootstrap failed</CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-[#6a2f28]">{error}</CardContent>
+          <CardContent className="text-sm text-destructive">{error}</CardContent>
         </Card>
       </main>
     );
@@ -210,7 +210,7 @@ export function EditorPage() {
 
   return (
     <main
-      className="relative min-h-screen bg-[#bcb7b1]"
+      className="relative min-h-screen bg-background"
       onDragEnter={(event) => {
         if (!containsFileTransfer(event)) {
           return;
@@ -261,15 +261,15 @@ export function EditorPage() {
       }}
     >
       {isDragActive ? (
-        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(46,46,45,0.12),rgba(188,183,177,0.94))] px-8">
-          <div className="border border-black/20 bg-[#d9d7d4] px-10 py-9 text-center shadow-[0_30px_90px_-40px_rgba(0,0,0,0.6)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#5d5b58]">
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-8 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border bg-card px-10 py-9 text-center shadow-2xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
               Drop to import
             </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-[#2f2f2d]">
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-foreground">
               Release an ICO or ICNS file
             </h2>
-            <p className="mt-3 text-sm text-[#615f5c]">
+            <p className="mt-3 text-sm text-muted-foreground">
               The dropped file will run through the same guarded main-process
               import flow as the titlebar Open action.
             </p>
@@ -331,7 +331,7 @@ export function EditorPage() {
         />
       ) : null}
 
-      <div className="flex min-h-screen flex-col overflow-hidden border border-black/24 bg-[#d1ceca] shadow-[0_28px_70px_-38px_rgba(0,0,0,0.55)]">
+      <div className="flex min-h-screen flex-col overflow-hidden border border-border bg-card shadow-2xl">
         <WindowTitleBar
           importingFormat={importingFormat}
           isExporting={isExporting}
@@ -376,7 +376,7 @@ export function EditorPage() {
         />
 
         {error ? (
-          <div className="border-b border-[#ad6b62] bg-[#e2c9c5] px-4 py-2 text-sm text-[#6f3129]">
+          <div className="border-b border-destructive/40 bg-destructive/10 px-4 py-2 text-sm text-destructive">
             {error}
           </div>
         ) : null}

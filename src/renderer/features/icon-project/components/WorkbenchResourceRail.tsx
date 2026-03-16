@@ -85,8 +85,8 @@ export function WorkbenchResourceRail({
   }, [openMenuResourceId, project]);
 
   return (
-    <aside className="flex min-h-0 flex-col border-r border-black/18 bg-[#cfcdca]">
-      <div className="border-b border-black/15 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#555452]">
+    <aside className="flex min-h-0 flex-col border-r border-border/80 bg-muted">
+      <div className="border-b border-border/60 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
         {project
           ? project.format === 'ico'
             ? 'ICO entries'
@@ -94,13 +94,13 @@ export function WorkbenchResourceRail({
           : 'Preview ladder'}
       </div>
       {project && selectedResource ? (
-        <div className="border-b border-black/12 bg-[#d7d5d2] px-3 py-2">
+        <div className="border-b border-border/50 bg-secondary px-3 py-2">
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold tracking-[-0.02em] text-[#2f2f2d]">
+              <p className="truncate text-sm font-semibold tracking-[-0.02em] text-foreground">
                 {selectedResource.label}
               </p>
-              <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6d6b68]">
+              <p className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                 {selectedResource.meta}
               </p>
             </div>
@@ -147,7 +147,7 @@ export function WorkbenchResourceRail({
       ) : null}
       <div className="flex-1 space-y-2 overflow-auto px-3 py-3">
         {project && resources.length === 0 ? (
-          <div className="border border-dashed border-black/18 bg-[#dbd9d6] px-3 py-4 text-xs leading-5 text-[#5b5956]">
+          <div className="rounded-lg border border-dashed border-border bg-secondary px-3 py-4 text-xs leading-5 text-muted-foreground">
             {project.format === 'ico'
               ? 'No ICO entries yet. Use the toolbox to create a blank bitmap or import the first PNG entry.'
               : 'No ICNS chunks yet. Create a blank canonical slot or import one from the toolbox to start drawing.'}
@@ -173,7 +173,7 @@ export function WorkbenchResourceRail({
                 <button
                   className={cn(
                     'flex w-full items-center gap-3 pr-9 text-left transition-colors',
-                    isSelected ? 'text-[#1f1f1f]' : 'text-[#565553]',
+                    isSelected ? 'text-foreground' : 'text-muted-foreground',
                   )}
                   onClick={() => {
                     setOpenMenuResourceId(null);
@@ -183,8 +183,8 @@ export function WorkbenchResourceRail({
                 >
                   <div
                     className={cn(
-                      'flex size-[52px] shrink-0 items-center justify-center border border-black/26 bg-[#efefee] text-xs text-[#63615f]',
-                      isSelected ? 'ring-2 ring-[#4b4b4a]/50' : null,
+                      'flex size-[52px] shrink-0 items-center justify-center border border-border bg-background text-xs text-muted-foreground',
+                      isSelected ? 'ring-2 ring-primary/50' : null,
                     )}
                   >
                     {resource.previewDataUrl ? (
@@ -203,7 +203,7 @@ export function WorkbenchResourceRail({
                     <p className="text-sm font-semibold leading-tight tracking-[-0.02em]">
                       {resource.label}
                     </p>
-                    <p className="mt-1 truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6d6b68]">
+                    <p className="mt-1 truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                       {resource.meta}
                     </p>
                   </div>
@@ -213,10 +213,10 @@ export function WorkbenchResourceRail({
                   <button
                     aria-label="Open entry actions"
                     className={cn(
-                      'absolute top-1 right-0 flex size-7 items-center justify-center border border-black/18 bg-[#d9d7d4] text-[#3e3d3a] transition-colors',
+                      'absolute top-1 right-0 flex size-7 items-center justify-center rounded-lg border border-border bg-secondary text-secondary-foreground transition-colors',
                       isUpdatingProject
                         ? 'cursor-not-allowed opacity-55'
-                        : 'hover:bg-[#e5e3df]',
+                        : 'hover:bg-accent',
                     )}
                     disabled={isUpdatingProject}
                     onClick={(event) => {
@@ -234,7 +234,7 @@ export function WorkbenchResourceRail({
                 ) : null}
 
                 {isMenuOpen ? (
-                  <div className="absolute top-1 right-9 z-20 w-44 border border-black/20 bg-[#d7d5d2] p-1 shadow-[0_12px_32px_-18px_rgba(0,0,0,0.5)]">
+                  <div className="absolute top-1 right-9 z-20 w-44 rounded-xl border border-border/80 bg-card p-1 shadow-lg">
                     {isIcoResource ? (
                       <>
                         <ResourceMenuButton
@@ -262,7 +262,7 @@ export function WorkbenchResourceRail({
                             )
                           }
                         />
-                        <div className="my-1 border-t border-black/10" />
+                        <div className="my-1 border-t border-border" />
                       </>
                     ) : null}
                     <ResourceMenuButton
@@ -287,7 +287,7 @@ export function WorkbenchResourceRail({
             );
           })
         ) : !project ? (
-          <p className="text-xs leading-5 text-[#7a7875]">
+          <p className="text-xs leading-5 text-muted-foreground">
             Open or create a project to populate entries.
           </p>
         ) : null}
@@ -323,8 +323,8 @@ function RailActionButton({
     <button
       aria-label={ariaLabel}
       className={cn(
-        'flex size-7 items-center justify-center border border-black/18 bg-[#ebe9e6] text-[#3e3d3a] transition-colors',
-        disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-[#f2f0ed]',
+        'flex size-7 items-center justify-center rounded-lg border border-border bg-accent text-accent-foreground transition-colors',
+        disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-accent/80',
       )}
       disabled={disabled}
       onClick={onClick}
@@ -349,15 +349,15 @@ function ResourceMenuButton({
   return (
     <button
       className={cn(
-        'flex w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm text-[#353533] transition-colors',
-        disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-[#eceae7]',
+        'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors',
+        disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-accent hover:text-accent-foreground',
       )}
       disabled={disabled}
       onClick={onClick}
       type="button"
     >
       <span>{label}</span>
-      <Icon className="size-4 text-[#5f5d5a]" />
+      <Icon className="size-4 text-muted-foreground" />
     </button>
   );
 }
@@ -448,15 +448,15 @@ function AddResourceSection({
     project.format === 'icns' ? getMissingIcnsSlots(project, icnsSlots) : [];
 
   return (
-    <div className="border-t border-black/15 px-3 py-3 space-y-2">
+    <div className="border-t border-border/60 px-3 py-3 space-y-2">
       {project.format === 'ico' ? (
         <>
           <button
             className={cn(
-              'flex h-9 w-full items-center justify-center gap-2 border border-black/28 bg-[#4b4b4a] text-xs font-semibold text-white transition-colors',
+              'flex h-9 w-full items-center justify-center gap-2 rounded-full bg-primary text-xs font-medium text-primary-foreground transition-colors',
               isUpdatingProject
                 ? 'cursor-not-allowed opacity-55'
-                : 'hover:bg-[#3e3e3d]',
+                : 'hover:bg-primary/90',
             )}
             disabled={isUpdatingProject}
             onClick={() => void onAddIcoEntry()}
@@ -470,10 +470,10 @@ function AddResourceSection({
               <button
                 key={size}
                 className={cn(
-                  'border border-black/18 bg-[#d9d7d4] py-1.5 text-[11px] font-semibold text-[#343330] transition-colors',
+                  'rounded-lg border border-border bg-secondary py-1.5 text-[11px] font-medium text-secondary-foreground transition-colors',
                   isUpdatingProject
                     ? 'cursor-not-allowed opacity-55'
-                    : 'hover:bg-[#e1dfdc]',
+                    : 'hover:bg-accent',
                 )}
                 disabled={isUpdatingProject}
                 onClick={() => void onAddBlankIcoEntry(size)}
@@ -492,20 +492,20 @@ function AddResourceSection({
               key={slot.chunkType}
               className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-1"
             >
-              <div className="flex items-center border border-black/18 bg-[#ebe9e6] px-2 text-[11px] text-[#343330]">
+              <div className="flex items-center rounded-lg border border-border bg-accent px-2 text-[11px] text-secondary-foreground">
                 <div>
                   <div className="truncate">{slot.label}</div>
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6d6b68]">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                     {slot.chunkType}
                   </div>
                 </div>
               </div>
               <button
                 className={cn(
-                  'border border-black/18 bg-[#d9d7d4] px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#343330] transition-colors',
+                  'rounded-lg border border-border bg-secondary px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-secondary-foreground transition-colors',
                   isUpdatingProject
                     ? 'cursor-not-allowed opacity-55'
-                    : 'hover:bg-[#e1dfdc]',
+                    : 'hover:bg-accent',
                 )}
                 disabled={isUpdatingProject}
                 onClick={() => void onAddBlankIcnsSlot(slot.chunkType)}
@@ -515,10 +515,10 @@ function AddResourceSection({
               </button>
               <button
                 className={cn(
-                  'border border-black/18 bg-[#d9d7d4] px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#343330] transition-colors',
+                  'rounded-lg border border-border bg-secondary px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-secondary-foreground transition-colors',
                   isUpdatingProject
                     ? 'cursor-not-allowed opacity-55'
-                    : 'hover:bg-[#e1dfdc]',
+                    : 'hover:bg-accent',
                 )}
                 disabled={isUpdatingProject}
                 onClick={() => void onAddIcnsSlot(slot.chunkType)}

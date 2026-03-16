@@ -19,6 +19,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -31,42 +33,46 @@
 }
 
 :root {
-  --font-sans: 'Aptos', 'Trebuchet MS', 'Segoe UI', sans-serif;
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', 'Cascadia Code', 'SFMono-Regular', monospace;
-  --radius: 1.1rem;
-  --background: oklch(0.975 0.012 80);
-  --foreground: oklch(0.24 0.03 55);
-  --card: oklch(0.995 0.004 78 / 0.86);
-  --card-foreground: oklch(0.22 0.03 55);
-  --primary: oklch(0.47 0.08 185);
-  --primary-foreground: oklch(0.98 0.004 90);
-  --secondary: oklch(0.93 0.018 73);
-  --secondary-foreground: oklch(0.28 0.04 60);
-  --muted: oklch(0.95 0.01 80);
-  --muted-foreground: oklch(0.47 0.025 58);
-  --accent: oklch(0.89 0.04 58);
-  --accent-foreground: oklch(0.28 0.05 52);
-  --border: oklch(0.86 0.015 78);
-  --input: oklch(0.9 0.014 80);
-  --ring: oklch(0.58 0.08 185);
+  --radius: 1.35rem;
+  --background: hsl(264 58% 97%);
+  --foreground: hsl(268 24% 18%);
+  --card: hsl(270 100% 99%);
+  --card-foreground: hsl(268 24% 18%);
+  --primary: hsl(269 52% 49%);
+  --primary-foreground: hsl(270 100% 99%);
+  --secondary: hsl(265 50% 92%);
+  --secondary-foreground: hsl(268 28% 28%);
+  --muted: hsl(264 42% 94%);
+  --muted-foreground: hsl(266 14% 44%);
+  --accent: hsl(276 58% 90%);
+  --accent-foreground: hsl(270 31% 27%);
+  --destructive: hsl(353 70% 54%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(267 31% 84%);
+  --input: hsl(267 31% 84%);
+  --ring: hsl(269 52% 49%);
 }
 
 .dark {
-  --background: oklch(0.19 0.02 230);
-  --foreground: oklch(0.95 0.01 80);
-  --card: oklch(0.24 0.02 230 / 0.9);
-  --card-foreground: oklch(0.96 0.01 90);
-  --primary: oklch(0.75 0.11 186);
-  --primary-foreground: oklch(0.19 0.02 230);
-  --secondary: oklch(0.28 0.025 230);
-  --secondary-foreground: oklch(0.95 0.01 90);
-  --muted: oklch(0.26 0.02 230);
-  --muted-foreground: oklch(0.78 0.01 90);
-  --accent: oklch(0.31 0.03 245);
-  --accent-foreground: oklch(0.95 0.01 90);
-  --border: oklch(0.36 0.02 230);
-  --input: oklch(0.31 0.02 230);
-  --ring: oklch(0.75 0.11 186);
+  --background: hsl(270 36% 9%);
+  --foreground: hsl(272 38% 89%);
+  --card: hsl(270 30% 12%);
+  --card-foreground: hsl(272 38% 89%);
+  --primary: hsl(269 82% 74%);
+  --primary-foreground: hsl(270 40% 11%);
+  --secondary: hsl(271 23% 18%);
+  --secondary-foreground: hsl(271 31% 82%);
+  --muted: hsl(270 20% 15%);
+  --muted-foreground: hsl(270 15% 63%);
+  --accent: hsl(276 26% 22%);
+  --accent-foreground: hsl(273 36% 86%);
+  --destructive: hsl(353 74% 61%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(270 18% 25%);
+  --input: hsl(270 18% 25%);
+  --ring: hsl(269 82% 74%);
 }
 
 @layer base {
@@ -86,15 +92,28 @@
     background-image:
       radial-gradient(
         circle at top left,
-        rgba(214, 121, 54, 0.16),
-        transparent 24%
+        hsl(269 52% 49% / 0.18),
+        transparent 38%
       ),
+      linear-gradient(
+        180deg,
+        hsl(264 58% 97% / 0.95),
+        hsl(270 50% 98% / 0.99)
+      );
+  }
+
+  .dark body {
+    background-image:
       radial-gradient(
-        circle at top right,
-        rgba(24, 120, 106, 0.18),
-        transparent 22%
+        circle at top left,
+        hsl(269 82% 74% / 0.32),
+        transparent 44%
       ),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0));
+      linear-gradient(
+        180deg,
+        hsl(270 36% 9% / 0.16),
+        hsl(270 36% 9% / 0.92)
+      );
   }
 
   ::selection {
@@ -112,15 +131,22 @@
   }
 
   .pixel-stage {
-    background-color: #ececeb;
+    background-color: hsl(264 42% 94%);
     background-image:
-      linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+      linear-gradient(hsl(269 52% 49% / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(269 52% 49% / 0.07) 1px, transparent 1px);
     background-size:
       22px 22px,
       22px 22px;
     background-position:
       0 0,
       0 0;
+  }
+
+  .dark .pixel-stage {
+    background-color: hsl(270 20% 15%);
+    background-image:
+      linear-gradient(hsl(269 82% 74% / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(269 82% 74% / 0.1) 1px, transparent 1px);
   }
 }

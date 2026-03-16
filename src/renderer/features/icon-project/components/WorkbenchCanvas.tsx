@@ -167,18 +167,18 @@ export function WorkbenchCanvas({
   );
 
   return (
-    <section className="flex min-h-0 flex-col bg-[#d7d6d3]">
-      <div className="flex items-center justify-between border-b border-black/15 px-5 py-3">
+    <section className="flex min-h-0 flex-col bg-secondary">
+      <div className="flex items-center justify-between border-b border-border/60 px-5 py-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#5f5d5a]">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             {canvasState.header}
           </p>
-          <p className="mt-1 text-sm text-[#4f4e4b]">
+          <p className="mt-1 text-sm text-foreground/70">
             {selectedSummary ?? canvasState.subHeader}
           </p>
         </div>
         {project ? (
-          <div className="text-right text-xs uppercase tracking-[0.16em] text-[#666461]">
+          <div className="text-right text-xs uppercase tracking-[0.16em] text-muted-foreground">
             <div>{project.format.toUpperCase()}</div>
             <div className="mt-1">
               {project.isDirty ? 'Unsaved changes' : 'Saved'}
@@ -221,7 +221,7 @@ export function WorkbenchCanvas({
                 <canvas
                   ref={pixelEditor.canvasRef}
                   className={cn(
-                    'touch-none border border-black/18 bg-transparent [image-rendering:pixelated]',
+                    'touch-none border border-border bg-transparent [image-rendering:pixelated]',
                     getCanvasCursor(pixelEditor.activeTool),
                   )}
                   height={pixelEditor.resource.height}
@@ -252,14 +252,14 @@ export function WorkbenchCanvas({
                 src={canvasState.previewDataUrl}
               />
             ) : (
-              <div className="max-w-md text-center text-[#5a5956]">
+              <div className="max-w-md text-center text-muted-foreground">
                 <p className="text-[34px] leading-tight tracking-[-0.05em]">
                   Preview / Drawing Canvas
                 </p>
-                <p className="mt-2 text-sm uppercase tracking-[0.24em] text-[#767471]">
+                <p className="mt-2 text-sm uppercase tracking-[0.24em] text-muted-foreground/70">
                   Pixel grid
                 </p>
-                <p className="mt-4 text-sm leading-6 text-[#666461]">
+                <p className="mt-4 text-sm leading-6 text-muted-foreground">
                   {pixelEditor.editorMessage}
                 </p>
               </div>
@@ -269,20 +269,20 @@ export function WorkbenchCanvas({
 
         {pixelEditor.canEdit ? (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-4">
-            <div className="pointer-events-auto flex items-center border border-black/20 bg-[#d9d7d4]/90 shadow-[0_4px_16px_-6px_rgba(0,0,0,0.35)] backdrop-blur-sm">
+            <div className="pointer-events-auto flex items-center rounded-full border border-border/80 bg-background/60 p-1 shadow-lg backdrop-blur-sm">
               <button
-                className="flex size-9 items-center justify-center text-[#343330] transition-colors hover:bg-black/8"
+                className="flex size-8 items-center justify-center rounded-full text-secondary-foreground transition-colors hover:bg-accent"
                 onClick={pixelEditor.decreaseZoom}
                 title="Zoom out"
                 type="button"
               >
                 <Minus className="size-4" />
               </button>
-              <span className="min-w-[52px] text-center text-xs font-semibold text-[#343330]">
+              <span className="min-w-[52px] text-center text-xs font-semibold text-secondary-foreground">
                 {pixelEditor.zoom}x
               </span>
               <button
-                className="flex size-9 items-center justify-center text-[#343330] transition-colors hover:bg-black/8"
+                className="flex size-8 items-center justify-center rounded-full text-secondary-foreground transition-colors hover:bg-accent"
                 onClick={pixelEditor.increaseZoom}
                 title="Zoom in"
                 type="button"

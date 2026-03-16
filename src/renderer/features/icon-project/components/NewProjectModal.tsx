@@ -70,18 +70,18 @@ function ProjectCard({
 }) {
   return (
     <button
-      className="flex min-h-52 flex-col items-start border border-black/18 bg-[#e2e0dd] p-5 text-left transition-colors hover:bg-[#ece9e6] disabled:cursor-not-allowed disabled:opacity-55"
+      className="flex min-h-52 flex-col items-start rounded-xl border border-border bg-muted p-5 text-left transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-55"
       disabled={isBusy}
       onClick={onClick}
       type="button"
     >
-      <span className="flex size-11 items-center justify-center border border-black/15 bg-[#d1cfcc] text-[#343432]">
+      <span className="flex size-11 items-center justify-center rounded-xl border border-border bg-secondary text-secondary-foreground">
         <Icon className="size-5" />
       </span>
-      <p className="mt-5 text-xl font-semibold tracking-[-0.04em] text-[#2f2f2d]">
+      <p className="mt-5 text-xl font-semibold tracking-[-0.04em] text-foreground">
         {label}
       </p>
-      <p className="mt-3 text-sm leading-6 text-[#5e5c59]">{description}</p>
+      <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
     </button>
   );
 }

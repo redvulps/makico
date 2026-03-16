@@ -32,20 +32,20 @@ export function WorkbenchModalShell({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(56,54,51,0.46)] p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6 backdrop-blur-sm">
       <div className="absolute inset-0" onClick={onClose} role="presentation" />
       <div
         className={cn(
-          'relative z-10 flex w-full max-w-2xl flex-col border border-black/24 bg-[#d8d6d3] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.68)]',
+          'relative z-10 flex w-full max-w-2xl flex-col rounded-2xl border border-border bg-card shadow-2xl',
           className,
         )}
       >
-        <div className="flex items-center justify-between border-b border-black/18 px-5 py-4">
-          <h2 className="text-xl font-semibold tracking-[-0.04em] text-[#2d2d2c]">
+        <div className="flex items-center justify-between border-b border-border px-5 py-4">
+          <h2 className="text-xl font-semibold tracking-[-0.04em] text-foreground">
             {title}
           </h2>
           <button
-            className="inline-flex size-9 items-center justify-center rounded-sm text-[#4b4a48] transition-colors hover:bg-black/8"
+            className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
             onClick={onClose}
             type="button"
           >

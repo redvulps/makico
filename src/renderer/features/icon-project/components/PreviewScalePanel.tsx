@@ -33,7 +33,7 @@ export function PreviewScalePanel({
           {previewSizes.map((size) => (
             <div
               key={size}
-              className="rounded-[1.5rem] border border-border/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(237,231,221,0.92))] p-3 text-center shadow-sm"
+              className="rounded-[1.5rem] border border-border/80 bg-card p-3 text-center shadow-sm"
             >
               <div className="mx-auto flex aspect-square items-center justify-center rounded-[1rem] border border-dashed border-primary/25 bg-primary/5 text-xs font-semibold text-primary">
                 {size}

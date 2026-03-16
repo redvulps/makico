@@ -47,6 +47,38 @@ export function useWorkbenchPreferences() {
     };
   }, []);
 
+  useEffect(() => {
+    const theme = preferences.theme;
+
+    function applyTheme(isDark: boolean): void {
+      document.documentElement.classList.toggle('dark', isDark);
+    }
+
+    if (theme === 'light') {
+      applyTheme(false);
+      return;
+    }
+
+    if (theme === 'dark') {
+      applyTheme(true);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    applyTheme(mediaQuery.matches);
+
+    function handleChange(event: MediaQueryListEvent): void {
+      applyTheme(event.matches);
+    }
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, [preferences.theme]);
+
   async function updatePreference<K extends keyof WorkbenchPreferences>(
     key: K,
     value: WorkbenchPreferences[K],

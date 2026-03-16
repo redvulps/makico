@@ -82,7 +82,7 @@ export function WindowTitleBar({
   }, [isOpenMenuVisible]);
 
   return (
-    <header className="app-drag flex h-14 items-center justify-between border-b border-black/20 bg-[#b3b2b0] px-4 text-[#2d2d2d]">
+    <header className="app-drag flex items-center justify-between border-b border-border/80 bg-background/90 px-3 py-1.5 text-foreground">
       <div className="app-no-drag flex items-center gap-2">
         <TitleBarActionButton disabled={isBusy} onClick={onOpenNewProjectModal}>
           <Plus className="size-4" />
@@ -99,7 +99,7 @@ export function WindowTitleBar({
             <ChevronDown className="size-4" />
           </TitleBarActionButton>
           {isOpenMenuVisible ? (
-            <div className="absolute top-[calc(100%+8px)] left-0 z-40 w-72 rounded-sm border border-black/20 bg-[#d7d5d2] p-1 shadow-[0_12px_32px_-18px_rgba(0,0,0,0.5)]">
+            <div className="absolute top-[calc(100%+8px)] left-0 z-40 w-72 rounded-xl border border-border/80 bg-card p-1 shadow-lg">
               <OpenMenuButton
                 label={
                   importingFormat === 'ico' ? 'Opening ICO...' : 'Open ICO'
@@ -120,8 +120,8 @@ export function WindowTitleBar({
               />
               {recentProjects.length > 0 ? (
                 <>
-                  <div className="my-1 border-t border-black/10" />
-                  <p className="px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6b6966]">
+                  <div className="my-1 border-t border-border" />
+                  <p className="px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     Recent files
                   </p>
                   {recentProjects.slice(0, 6).map((project) => (
@@ -165,7 +165,7 @@ export function WindowTitleBar({
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 flex justify-center">
-        <div className="max-w-[44ch] truncate px-40 pt-4 text-sm font-medium tracking-[-0.02em] text-[#4a4a49]">
+        <div className="truncate text-sm font-semibold uppercase tracking-[0.14em] text-foreground/70">
           {project?.name ?? 'Makico'}
         </div>
       </div>
@@ -188,7 +188,7 @@ export function WindowTitleBar({
           )}
         </WindowControlButton>
         <WindowControlButton
-          className="hover:bg-[#a03f3f] hover:text-white"
+          className="hover:bg-red-500 hover:text-white"
           onClick={() => void onCloseWindow()}
           title="Close"
         >
@@ -213,8 +213,8 @@ function TitleBarActionButton({
   return (
     <button
       className={cn(
-        'inline-flex h-9 items-center gap-2 rounded-sm border border-black/30 bg-[#4b4b4a] px-4 text-sm font-semibold text-white transition-colors',
-        disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-[#3f3f3e]',
+        'inline-flex h-8 items-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors',
+        disabled ? 'cursor-not-allowed opacity-55' : 'hover:bg-primary/90',
       )}
       disabled={disabled}
       onClick={onClick}
@@ -241,8 +241,8 @@ function TitleBarIconButton({
   return (
     <button
       className={cn(
-        'inline-flex size-9 items-center justify-center rounded-full border border-transparent text-[#4a4a49] transition-colors hover:bg-black/8',
-        isActive ? 'bg-black/10 text-[#252525]' : null,
+        'inline-flex size-8 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-accent hover:text-accent-foreground',
+        isActive ? 'bg-accent text-accent-foreground' : null,
       )}
       onClick={onClick}
       title={title}
@@ -268,7 +268,7 @@ function OpenMenuButton({
 }: OpenMenuButtonProps) {
   return (
     <button
-      className="flex w-full items-center gap-3 rounded-sm px-3 py-2 text-left text-sm text-[#2e2e2d] transition-colors hover:bg-black/7"
+      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
       onClick={onClick}
       title={title}
       type="button"
@@ -276,7 +276,7 @@ function OpenMenuButton({
       <Square className="size-3.5" />
       <span className="min-w-0 flex-1 truncate">{label}</span>
       {secondaryLabel ? (
-        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b6966]">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           {secondaryLabel}
         </span>
       ) : null}
@@ -300,7 +300,7 @@ function WindowControlButton({
   return (
     <button
       className={cn(
-        'inline-flex size-8 items-center justify-center rounded-sm text-[#393938] transition-colors hover:bg-black/8',
+        'inline-flex size-8 items-center justify-center rounded-none text-foreground/70 transition-colors hover:bg-accent',
         className,
       )}
       onClick={onClick}
