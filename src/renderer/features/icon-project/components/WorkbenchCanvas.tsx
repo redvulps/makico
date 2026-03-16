@@ -192,36 +192,35 @@ export function WorkbenchCanvas({
           ref={scrollContainerRef}
           className={cn(
             'absolute inset-0 overflow-auto',
-            effectivePixelGrid ? 'pixel-stage' : null,
             isPanning ? 'cursor-grab' : null,
           )}
           onPointerDown={handlePanPointerDown}
           onPointerMove={handlePanPointerMove}
           onPointerUp={handlePanPointerUp}
-          style={{
-            contain: 'layout style',
-            ...(effectivePixelGrid
-              ? {
-                  backgroundSize: `${pixelEditor.zoom}px ${pixelEditor.zoom}px, ${pixelEditor.zoom}px ${pixelEditor.zoom}px`,
-                }
-              : undefined),
-          }}
+          style={{ contain: 'layout style' }}
         >
           <div className="min-h-full min-w-full p-6"
             style={{ display: 'grid', placeItems: 'center' }}
           >
             {pixelEditor.canEdit && pixelEditor.resource ? (
               <div
+                className={cn(effectivePixelGrid ? 'pixel-stage' : null)}
                 style={{
                   width: pixelEditor.resource.width * pixelEditor.zoom,
                   height: pixelEditor.resource.height * pixelEditor.zoom,
                   contain: 'strict',
+                  ...(effectivePixelGrid
+                    ? {
+                        backgroundSize: `${pixelEditor.zoom}px ${pixelEditor.zoom}px, ${pixelEditor.zoom}px ${pixelEditor.zoom}px`,
+                      }
+                    : undefined),
                 }}
               >
                 <canvas
                   ref={pixelEditor.canvasRef}
                   className={cn(
-                    'touch-none border border-border bg-transparent [image-rendering:pixelated]',
+                    'touch-none bg-transparent [image-rendering:pixelated]',
+                    effectivePixelGrid ? null : 'border border-border',
                     getCanvasCursor(pixelEditor.activeTool),
                   )}
                   height={pixelEditor.resource.height}

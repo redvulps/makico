@@ -24,12 +24,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) * 0.75);
-  --radius-md: calc(var(--radius) * 0.9);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.25);
-  --radius-2xl: calc(var(--radius) * 1.6);
-  --radius-3xl: calc(var(--radius) * 2.1);
 }
 
 :root {
@@ -90,30 +87,22 @@
     @apply bg-background text-foreground font-sans antialiased;
     overflow: hidden;
     background-image:
-      radial-gradient(
-        circle at top left,
+      radial-gradient(circle at top left,
         hsl(269 52% 49% / 0.18),
-        transparent 38%
-      ),
-      linear-gradient(
-        180deg,
+        transparent 38%),
+      linear-gradient(180deg,
         hsl(264 58% 97% / 0.95),
-        hsl(270 50% 98% / 0.99)
-      );
+        hsl(270 50% 98% / 0.99));
   }
 
   .dark body {
     background-image:
-      radial-gradient(
-        circle at top left,
+      radial-gradient(circle at top left,
         hsl(269 82% 74% / 0.32),
-        transparent 44%
-      ),
-      linear-gradient(
-        180deg,
+        transparent 44%),
+      linear-gradient(180deg,
         hsl(270 36% 9% / 0.16),
-        hsl(270 36% 9% / 0.92)
-      );
+        hsl(270 36% 9% / 0.92));
   }
 
   ::selection {
