@@ -18,7 +18,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "build:win": "npm run build && electron-builder --win",
+    "build:linux": "npm run build && electron-builder --linux",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:all": "npm run build && electron-builder --win --linux --mac"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -40,6 +44,7 @@
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
     "electron": "^37.3.1",
+    "electron-builder": "^26.0.0",
     "electron-vite": "^4.0.1",
     "eslint": "^9.36.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -51,5 +56,56 @@
     "typescript-eslint": "^8.44.1",
     "vite": "^7.1.7",
     "vitest": "^4.1.0"
+  },
+  "build": {
+    "appId": "org.redvulps.makico",
+    "productName": "Makico",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "appx", "arch": ["x64"] }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "appx": {
+      "identityName": "Makico",
+      "publisher": "CN=Makico",
+      "publisherDisplayName": "Makico",
+      "applicationId": "Makico"
+    },
+    "mac": {
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] }
+      ],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.graphics-design"
+    },
+    "linux": {
+      "appId": "org.redvulps.makico",
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "flatpak", "arch": ["x64"] }
+      ],
+      "icon": "build/icons",
+      "category": "Graphics"
+    },
+    "flatpak": {
+      "runtimeVersion": "25.08",
+      "baseVersion": "25.08",
+      "runtime": "org.freedesktop.Platform",
+      "sdk": "org.freedesktop.Sdk"
+    }
   }
 }
